@@ -1,0 +1,11 @@
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\bin\Debug\Game.exe.config
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\bin\Debug\Game.exe
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\bin\Debug\Game.pdb
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\obj\Debug\Game.csproj.AssemblyReference.cache
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\obj\Debug\Game.csproj.SuggestedBindingRedirects.cache
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\obj\Debug\Game.Form1.resources
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\obj\Debug\Game.Properties.Resources.resources
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\obj\Debug\Game.csproj.GenerateResource.cache
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\obj\Debug\Game.csproj.CoreCompileInputs.cache
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\obj\Debug\Game.exe
+C:\Data\UIT\HK3\IT008\Dev\Game\Game\obj\Debug\Game.pdb
