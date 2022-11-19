@@ -21,6 +21,10 @@ namespace Game
         bool gameover = false;
         int PosX;
         int PosY;
+        bool flagL=false, flagR=false, flagU=false, flagD=false; 
+        int flag = 0;
+        int totalTT = 5;
+        int bulletTime = 500;
         public Form1()
         {
             InitializeComponent();
@@ -81,34 +85,11 @@ namespace Game
             Refresh();
         }
 
-        private void timer2_Tick(object sender, EventArgs e)
+      
+
+        private void CreateThienThach(int sl)
         {
-
-
-        }
-
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
-        {
-           
-        }
-
-        private void timerPhiThuyen_Tick(object sender, EventArgs e)
-        {
-            this.lbScore.Text = "Score: " + Score.ToString();
-           
-            this.pictureBoxPhiThuyen.BackColor = Color.Transparent;
-            PosX = pictureBoxPhiThuyen.Location.X ;
-            PosY = pictureBoxPhiThuyen.Location.Y;
-            pictureBoxPhiThuyen.Location = new Point(PosX, PosY);
-            if (pictureBoxPhiThuyen.Location.X < 30)
-            {
-                PosX = 30;
-            }
-            if (pictureBoxPhiThuyen.Location.Y > this.ClientSize.Height)
-            {
-                PosY = this.ClientSize.Height - 30;
-            }
-            if (thienthach.Count < 5)
+            if (thienthach.Count < sl) // Thiên thạch xuất hiện
             {
                 int FirstPos = random.Next(25, this.ClientSize.Width - 50);
                 for (int i = 0; i < thienthach.Count; i++)
@@ -121,15 +102,59 @@ namespace Game
                 }
                 thienthach.Add(new ThienThach(FirstPos, 25));
             }
+        }
+
+        void PhiThuyenMove()
+        {
+            pictureBoxPhiThuyen.Location = new Point(PosX, PosY);
+            if (pictureBoxPhiThuyen.Location.X < 30)
+            {
+                PosX = 30;
+            }
+            if (pictureBoxPhiThuyen.Location.Y > this.ClientSize.Height)
+            {
+                PosY = this.ClientSize.Height - 30;
+            }
+
+        }
+        void GameOver()
+        {
             if (CheckVaCham())
             {
                 pictureBoxPhiThuyen.Enabled = false;
                 timerPhiThuyen.Stop();
                 timer1.Stop();
                 timerGun.Stop();
-                MessageBox.Show("Game over", "thong bao");
-            }
+                timerExplode.Stop();
+                timerLevel.Stop();
+                DialogResult dialogResult= MessageBox.Show("Game over\t\n Bạn có muốn chơi game khác?", "Thông báo", MessageBoxButtons.RetryCancel, MessageBoxIcon.Question );
+                if(dialogResult==DialogResult.Retry)
+                {
 
+                    pictureBoxPhiThuyen.Location = new Point(271, 505);
+                }    
+            }
+        }
+        void ResetGame()
+        {
+            thienthach.Clear();
+            bombs.Clear();
+            gun.Clear();
+            timerPhiThuyen.Start();
+            timer1.Start();
+            timerGun.Start();
+            timerExplode.Start();
+            timerLevel.Start();
+            flagR = false;
+            flagL = false;
+            flagU = false;
+            flagD = false;
+            totalTT = 5;
+            timerGun.Interval = 500;
+
+        }
+        void CheckVaCHam()
+        {
             int xImage = 0;
             int yImage = 0;
             List<int> shot = CheckShot();
@@ -149,6 +174,24 @@ namespace Game
                 Explode explode = new Explode(xImage, yImage);
                 bombs.Add(explode);
             }
+        }
+        private void timerPhiThuyen_Tick(object sender, EventArgs e)
+        {
+            GoDown();
+            GoLeft();
+            GoRight();
+            GoUp();
+            this.lbScore.Text = "Score: " + Score.ToString();
+           
+            this.pictureBoxPhiThuyen.BackColor = Color.Transparent;
+            PosX = pictureBoxPhiThuyen.Location.X ;
+            PosY = pictureBoxPhiThuyen.Location.Y;
+            PhiThuyenMove();
+
+            CreateThienThach(totalTT);
+            CheckVaCHam();
+            GameOver();
+
             Refresh();
         }
         void CreateBullet()
@@ -158,7 +201,7 @@ namespace Game
         private void timerGun_Tick(object sender, EventArgs e)
         {
             flag = 1;
-         //   gun.Add(new Bullet(PosX + 25, PosY + 35));
+         
 
         }
         
@@ -211,37 +254,78 @@ namespace Game
             return new List<int> { -1, -1 };
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+
+        void GoLeft()
         {
-            
+            if (pictureBoxPhiThuyen.Location.X > 5 && flagL == true)
+                pictureBoxPhiThuyen.Location = new Point(pictureBoxPhiThuyen.Location.X - 15, pictureBoxPhiThuyen.Location.Y);
         }
+        void GoRight()
+        {
+            if (pictureBoxPhiThuyen.Location.X < this.ClientSize.Width - 95 && flagR == true)
+                pictureBoxPhiThuyen.Location = new Point(15 + pictureBoxPhiThuyen.Location.X, pictureBoxPhiThuyen.Location.Y);
+        }
+        void GoUp()
+        {
+            if (pictureBoxPhiThuyen.Location.Y > 0 && flagU==true)
+                pictureBoxPhiThuyen.Location = new Point(pictureBoxPhiThuyen.Location.X, pictureBoxPhiThuyen.Location.Y - 15);
+        }
+        void GoDown()
+        {
+            if (pictureBoxPhiThuyen.Location.Y < this.ClientSize.Height - 84 && flagD == true)
+                pictureBoxPhiThuyen.Location = new Point(pictureBoxPhiThuyen.Location.X, pictureBoxPhiThuyen.Location.Y + 15);
+        }
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Right)
+            {
+                flagR = false;
+            }
+            else if (e.KeyData == Keys.Left)
+            {
+                flagL = false;
+            }
+            else if (e.KeyData == Keys.Up)
+            {
+                flagU = false;
+            }
+            else if (e.KeyData == Keys.Down)
+            {
+                flagD = false;
+
+            }
+        }
+
+        private void timerLevel_Tick(object sender, EventArgs e)
+        {
+            totalTT += 1;
+            timerGun.Interval -= 100;
+        }
+
 
         private void timerExplode_Tick(object sender, EventArgs e)
         {
             bombs.Clear();
         }
-        int flag = 0;
+       
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Right)
             {
-                if (pictureBoxPhiThuyen.Location.X < this.ClientSize.Width - 95)
-                    pictureBoxPhiThuyen.Location = new Point(20+ pictureBoxPhiThuyen.Location.X, pictureBoxPhiThuyen.Location.Y);
+                flagR = true;
             }
             else if (e.KeyData == Keys.Left)
             {
-                if (pictureBoxPhiThuyen.Location.X > 5)
-                    pictureBoxPhiThuyen.Location = new Point( pictureBoxPhiThuyen.Location.X-20, pictureBoxPhiThuyen.Location.Y);
+                flagL = true;
             }
             else if (e.KeyData == Keys.Up)
             {
-                if (pictureBoxPhiThuyen.Location.Y > 0)
-                    pictureBoxPhiThuyen.Location = new Point(pictureBoxPhiThuyen.Location.X, pictureBoxPhiThuyen.Location.Y - 20);
+                flagU = true;
             }
             else if (e.KeyData == Keys.Down)
             {
-                if (pictureBoxPhiThuyen.Location.Y < this.ClientSize.Height - 84)
-                    pictureBoxPhiThuyen.Location = new Point(pictureBoxPhiThuyen.Location.X, pictureBoxPhiThuyen.Location.Y+20);
+                flagD = true;
+               
             }
             else if (e.KeyData == Keys.Space)
             {

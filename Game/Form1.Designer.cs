@@ -37,6 +37,7 @@ namespace Game
             this.pictureBoxPhiThuyen = new System.Windows.Forms.PictureBox();
             this.timerExplode = new System.Windows.Forms.Timer(this.components);
             this.lbScore = new System.Windows.Forms.Label();
+            this.timerLevel = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPhiThuyen)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,6 +87,12 @@ namespace Game
             this.lbScore.TabIndex = 1;
             this.lbScore.Text = "Score: ";
             // 
+            // timerLevel
+            // 
+            this.timerLevel.Enabled = true;
+            this.timerLevel.Interval = 30000;
+            this.timerLevel.Tick += new System.EventHandler(this.timerLevel_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -97,10 +104,9 @@ namespace Game
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPhiThuyen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -115,6 +121,7 @@ namespace Game
         private System.Windows.Forms.Timer timerGun;
         private System.Windows.Forms.Timer timerExplode;
         private System.Windows.Forms.Label lbScore;
+        private System.Windows.Forms.Timer timerLevel;
     }
 }
 
